@@ -102,3 +102,13 @@ df["cleaned_country"] = df["country"].apply(clean_country_name)
 df["country_code"] = df["cleaned_country"].apply(get_country_code)
 
 print(df[["country", "cleaned_country", "country_code"]].head())
+print(f"Total rows before removing duplicates: {len(df)}")
+
+df = df.drop_duplicates(subset=['cleaned_country', 'attackdate'], keep='first')
+
+print(f"Total rows after removing duplicates: {len(df)}")
+
+attack_columns = ['spam', 'exploit', 'malicious_mail', 'network_attack', 'ransomware']
+df['total_attacks'] = df[attack_columns].sum(axis=1)
+
+df.to_csv(file_path, index=False)
